@@ -2,7 +2,7 @@
  * Вся логика приложения находится здесь
  */
 
-import { Product, ProductId, togglePaymentType } from '../models';
+import { Product, togglePaymentType } from '../models';
 import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { AppEvents } from '../types';
