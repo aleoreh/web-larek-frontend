@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Хорошая практика даже простые типы выносить в алиасы
 
 // Зато когда захотите поменять это достаточно сделать в одном месте
@@ -25,7 +26,7 @@ export interface IEvents<E> {
  * Брокер событий, классическая реализация
  * В расширенных вариантах есть возможность подписаться на все события
  * или слушать события по шаблону например
-*/
+ */
 export class EventEmitter<E extends string | EventName> implements IEvents<E> {
 	_events: Map<E | EventName, Set<Subscriber>>;
 

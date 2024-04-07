@@ -2,7 +2,7 @@
  * Вся логика приложения находится здесь
  */
 
-import { Product, ProductId, togglePaymentType } from '../models';
+import { Product, togglePaymentType } from '../models';
 import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { AppEvents } from '../types';
@@ -51,7 +51,7 @@ function createBasketItem(basketView: BasketView) {
 function createCatalogItem(product: Product) {
 	const productView = new CatalogProductView({
 		onProductCardClick: () => {
-			events.emit('CARD_SELECT', { id: product.id });
+			events.emit('CARD_SELECT', { product });
 		},
 	});
 	return productView.render({
@@ -98,7 +98,14 @@ const orderService = new OrderService();
 
 // ~~~~~~~~~~~~~~~~ views ~~~~~~~~~~~~~~~~ //
 
-const modalView = new ModalView();
+const modalView = new ModalView({
+	onOpen: () => {
+		homeView.locked = true;
+	},
+	onClose: () => {
+		homeView.locked = false;
+	},
+});
 
 const homeView = new HomeView({
 	onBasketOpenClick: () => events.emit('BASKET_OPEN'),
@@ -153,10 +160,8 @@ events.on('START', () => {
 	});
 });
 
-events.on<{ id: ProductId }>('CARD_SELECT', ({ id }) => {
-	productService.getProduct(id).then((product) => {
-		modalView.render({ content: createProductPreview(product) });
-	});
+events.on<{ product: Product }>('CARD_SELECT', ({ product }) => {
+	modalView.render({ content: createProductPreview(product) });
 });
 
 events.on('BASKET_OPEN', () => {
@@ -255,7 +260,12 @@ events.on('ORDER_CONTACT_SUBMIT', () => {
 		}
 		basketState.clear();
 		orderState.clear();
-		modalView.render({
+		const successModalView = new ModalView({
+			onClose: () => {
+				events.emit('SUCCESS_CLOSE');
+			},
+		});
+		successModalView.render({
 			content: successView.render({
 				description: `Списано ${res.total} синапсов`,
 			}),

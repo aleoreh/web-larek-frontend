@@ -12,7 +12,6 @@ import { Order, Product, ProductId, SentOrder } from '../models';
 
 // ~~~~~~~~~~~ Порты "Services" ~~~~~~~~~~ //
 
-
 export interface IProductService {
 	getProducts: () => Promise<Product[]>;
 	getProduct: (id: ProductId) => Promise<Product>;
