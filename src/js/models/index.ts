@@ -27,7 +27,7 @@ export type Order = {
 type OrderId = string;
 type OrderTotal = number;
 
-export type SentOrder = { id: OrderId; total: OrderTotal } & Order;
+export type SentOrder = { id: OrderId; total: OrderTotal };
 
 export function emptyOrder(): Order {
 	return {

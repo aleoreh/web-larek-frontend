@@ -51,7 +51,7 @@ function createBasketItem(basketView: BasketView) {
 function createCatalogItem(product: Product) {
 	const productView = new CatalogProductView({
 		onProductCardClick: () => {
-			events.emit('CARD_SELECT', { id: product.id });
+			events.emit('CARD_SELECT', { product });
 		},
 	});
 	return productView.render({
@@ -153,10 +153,8 @@ events.on('START', () => {
 	});
 });
 
-events.on<{ id: ProductId }>('CARD_SELECT', ({ id }) => {
-	productService.getProduct(id).then((product) => {
-		modalView.render({ content: createProductPreview(product) });
-	});
+events.on<{ product: Product }>('CARD_SELECT', ({ product }) => {
+	modalView.render({ content: createProductPreview(product) });
 });
 
 events.on('BASKET_OPEN', () => {
