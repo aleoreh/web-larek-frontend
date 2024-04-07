@@ -255,7 +255,12 @@ events.on('ORDER_CONTACT_SUBMIT', () => {
 		}
 		basketState.clear();
 		orderState.clear();
-		modalView.render({
+		const successModalView = new ModalView({
+			onClose: () => {
+				events.emit('SUCCESS_CLOSE');
+			},
+		});
+		successModalView.render({
 			content: successView.render({
 				description: `Списано ${res.total} синапсов`,
 			}),
