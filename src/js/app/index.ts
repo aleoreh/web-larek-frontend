@@ -98,7 +98,14 @@ const orderService = new OrderService();
 
 // ~~~~~~~~~~~~~~~~ views ~~~~~~~~~~~~~~~~ //
 
-const modalView = new ModalView();
+const modalView = new ModalView({
+	onOpen: () => {
+		homeView.locked = true;
+	},
+	onClose: () => {
+		homeView.locked = false;
+	},
+});
 
 const homeView = new HomeView({
 	onBasketOpenClick: () => events.emit('BASKET_OPEN'),
