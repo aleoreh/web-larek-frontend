@@ -3,7 +3,7 @@ import { AppView } from './AppView.base';
 
 interface IBasketViewModel {
 	items: HTMLElement[];
-	total: number;
+	total: string;
 	validation?: Validation;
 }
 

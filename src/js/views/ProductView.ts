@@ -6,7 +6,7 @@ interface IProductViewModel {
 	image: string;
 	title: string;
 	category: string;
-	price: number | null;
+	price: string;
 	isInBasket?: boolean;
 	itemIndex?: number;
 	validation?: Validation;
@@ -59,9 +59,8 @@ abstract class ProductView extends AppView<IProductViewModel> {
 		this._category && this.setText(this._category, value);
 	}
 
-	set price(value: number | null) {
-		this._price &&
-			(this._price.textContent = isEmpty(value) ? '' : String(value));
+	set price(value: string) {
+		this._price && (this._price.textContent = value);
 	}
 
 	set categoryClass(value: string) {

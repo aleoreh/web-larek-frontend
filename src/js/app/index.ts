@@ -2,7 +2,7 @@
  * Вся логика приложения находится здесь
  */
 
-import { Product, togglePaymentType } from '../models';
+import { Product, formatProductPrice, togglePaymentType } from '../models';
 import { OrderService } from '../services/order.service';
 import { ProductService } from '../services/product.service';
 import { AppEvents } from '../types';
@@ -35,7 +35,7 @@ const categories: Record<string, string> = {
 // ~~~~~~~ вспомогательные функции ~~~~~~~ //
 
 function createBasketItem(basketView: BasketView) {
-	return (product: Product) => {
+	return (product: Product, itemIndex: number) => {
 		const productView = new BasketProductView({
 			onDeleteClick: () => {
 				events.emit('BASKET_DELETE_ITEM', { product, basketView });
@@ -43,7 +43,9 @@ function createBasketItem(basketView: BasketView) {
 		});
 		return productView.render({
 			...product,
+			price: formatProductPrice(product.price),
 			categoryClass: categories[product.category],
+			itemIndex,
 		});
 	};
 }
@@ -56,6 +58,7 @@ function createCatalogItem(product: Product) {
 	});
 	return productView.render({
 		...product,
+		price: formatProductPrice(product.price),
 		categoryClass: categories[product.category],
 	});
 }
@@ -72,6 +75,7 @@ function createProductPreview(product: Product) {
 		: [];
 	return productView.render({
 		...product,
+		price: formatProductPrice(product.price),
 		categoryClass: categories[product.category],
 		isInBasket: basketState.findItem(product) !== undefined,
 		validation,
@@ -170,8 +174,10 @@ events.on('BASKET_OPEN', () => {
 			? [{ key: 'total', value: 'Итог по корзине равен нулю' }]
 			: [];
 	const content = basketView.render({
-		items: basketState.items.map(createBasketItem(basketView)),
-		total: basketState.total,
+		items: basketState.items.map((item, i) =>
+			createBasketItem(basketView)(item, i)
+		),
+		total: formatProductPrice(basketState.total),
 		validation,
 	});
 	modalView.render({ content });
@@ -199,7 +205,7 @@ events.on<{ product: Product; basketView: BasketView }>(
 		modalView.render({
 			content: basketView.render({
 				items: basketState.items.map(createBasketItem(basketView)),
-				total: basketState.total,
+				total: formatProductPrice(basketState.total),
 				validation,
 			}),
 		});
@@ -267,7 +273,7 @@ events.on('ORDER_CONTACT_SUBMIT', () => {
 		});
 		successModalView.render({
 			content: successView.render({
-				description: `Списано ${res.total} синапсов`,
+				description: `Списано ${formatProductPrice(res.total)}`,
 			}),
 		});
 	});
