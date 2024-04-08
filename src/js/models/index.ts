@@ -2,6 +2,8 @@
  * Модели: их типы и связанные с ними вспомогательные функции
  */
 
+import { isEmpty } from '../utils/utils';
+
 export type ProductId = string;
 
 export type Product = {
@@ -12,6 +14,18 @@ export type Product = {
 	category: string;
 	price: number | null;
 };
+
+export function formatProductPrice(price: Product['price']) {
+	if (isEmpty(price)) return '';
+
+	const lastDigit = price % 10;
+
+	return lastDigit === 0 || lastDigit >= 5
+		? `${price} синапсов`
+		: lastDigit === 1
+		? `${price} синапс`
+		: `${price} синапса`;
+}
 
 export type PaymentType = 'card' | 'cash';
 
