@@ -35,7 +35,7 @@ const categories: Record<string, string> = {
 // ~~~~~~~ вспомогательные функции ~~~~~~~ //
 
 function createBasketItem(basketView: BasketView) {
-	return (product: Product) => {
+	return (product: Product, itemIndex: number) => {
 		const productView = new BasketProductView({
 			onDeleteClick: () => {
 				events.emit('BASKET_DELETE_ITEM', { product, basketView });
@@ -44,6 +44,7 @@ function createBasketItem(basketView: BasketView) {
 		return productView.render({
 			...product,
 			categoryClass: categories[product.category],
+			itemIndex,
 		});
 	};
 }
@@ -170,7 +171,9 @@ events.on('BASKET_OPEN', () => {
 			? [{ key: 'total', value: 'Итог по корзине равен нулю' }]
 			: [];
 	const content = basketView.render({
-		items: basketState.items.map(createBasketItem(basketView)),
+		items: basketState.items.map((item, i) =>
+			createBasketItem(basketView)(item, i)
+		),
 		total: basketState.total,
 		validation,
 	});
