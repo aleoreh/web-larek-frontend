@@ -55,7 +55,7 @@ export class OrderState {
 
 	private pushValidation(key: string, value: string) {
 		if (!this._validation.find((x) => x.key === key)) {
-			this._validation.push({ key, value });
+			this._validation.push({ key, error: value });
 		}
 	}
 
