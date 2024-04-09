@@ -1,4 +1,4 @@
-import { ensureElement, isEmpty } from '../utils/utils';
+import { ensureElement } from '../utils/utils';
 import { AppView, AvailableContainer } from './AppView.base';
 
 interface IProductViewModel {
