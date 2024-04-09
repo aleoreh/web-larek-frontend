@@ -176,7 +176,7 @@ events.on('BASKET_OPEN', () => {
 			: [];
 	const content = basketView.render({
 		items: basketState.items.map((item, i) =>
-			createBasketItem(basketView)(item, i)
+			createBasketItem(basketView)(item, i + 1)
 		),
 		total: formatProductPrice(basketState.total),
 		validation,
