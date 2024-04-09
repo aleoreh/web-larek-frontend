@@ -24,6 +24,7 @@ import { SuccessView } from '../views/SuccessView';
 import { EventEmitter } from './events';
 import { BasketState, OrderState } from './state';
 
+// dirty hack
 const categories: Record<string, string> = {
 	'софт-скил': 'soft',
 	другое: 'other',
