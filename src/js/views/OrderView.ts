@@ -48,7 +48,7 @@ abstract class OrderView extends AppView<IOrderViewModel> {
 		if (value.length === 0) {
 			this.setText(this._formErrors, '');
 		} else {
-			this.setText(this._formErrors, value.map((x) => x.value).join('. '));
+			this.setText(this._formErrors, value.map((x) => x.error).join('. '));
 		}
 	}
 

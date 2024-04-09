@@ -1,4 +1,4 @@
-import { ensureElement, isEmpty } from '../utils/utils';
+import { ensureElement } from '../utils/utils';
 import { AppView, AvailableContainer } from './AppView.base';
 
 interface IProductViewModel {
@@ -119,7 +119,7 @@ export class FullProductView extends ProductView {
 			this.setDisabled(this._toBasketButton, true);
 			this._toBasketButton.setAttribute(
 				'title',
-				value.map((x) => x.value).join('; ')
+				value.map((x) => x.error).join('; ')
 			);
 		} else {
 			this.setDisabled(this._toBasketButton, false);

@@ -24,6 +24,7 @@ import { SuccessView } from '../views/SuccessView';
 import { EventEmitter } from './events';
 import { BasketState, OrderState } from './state';
 
+// dirty hack
 const categories: Record<string, string> = {
 	'софт-скил': 'soft',
 	другое: 'other',
@@ -70,8 +71,8 @@ function createProductPreview(product: Product) {
 			modalView.close();
 		},
 	});
-	const validation = isEmpty(product.price)
-		? [{ key: 'price', value: 'Этот товар нельзя купить. Он бесценен!' }]
+	const validation: Validation = isEmpty(product.price)
+		? [{ key: 'price', error: 'Этот товар нельзя купить. Он бесценен!' }]
 		: [];
 	return productView.render({
 		...product,
@@ -169,13 +170,13 @@ events.on<{ product: Product }>('CARD_SELECT', ({ product }) => {
 });
 
 events.on('BASKET_OPEN', () => {
-	const validation =
+	const validation: Validation =
 		basketState.total === 0
-			? [{ key: 'total', value: 'Итог по корзине равен нулю' }]
+			? [{ key: 'total', error: 'Итог по корзине равен нулю' }]
 			: [];
 	const content = basketView.render({
 		items: basketState.items.map((item, i) =>
-			createBasketItem(basketView)(item, i)
+			createBasketItem(basketView)(item, i + 1)
 		),
 		total: formatProductPrice(basketState.total),
 		validation,
@@ -197,9 +198,9 @@ events.on<{ product: Product; basketView: BasketView }>(
 	'BASKET_DELETE_ITEM',
 	({ product, basketView }) => {
 		basketState.removeItem(product);
-		const validation =
+		const validation: Validation =
 			basketState.total === 0
-				? [{ key: 'total', value: 'Итог по корзине равен нулю' }]
+				? [{ key: 'total', error: 'Итог по корзине равен нулю' }]
 				: [];
 		homeView.render({ counter: basketState.count() });
 		modalView.render({

@@ -1,1 +1,1 @@
-type Validation = { key: string; value: string }[];
+type Validation = { key: string; error: string }[];
