@@ -2,9 +2,9 @@
  * Взаимодействие с Fetch API браузера
  */
 
-export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = 'POST' | 'PUT' | 'DELETE';
 
-export class Api {
+export class HttpDriver {
 	readonly baseUrl: string;
 	protected options: RequestInit;
 
@@ -33,7 +33,7 @@ export class Api {
 		}).then(this.handleResponse);
 	}
 
-	post(uri: string, data: object, method: ApiPostMethods = 'POST') {
+	post(uri: string, data: object, method: HttpMethod = 'POST') {
 		return fetch(this.baseUrl + uri, {
 			...this.options,
 			method,

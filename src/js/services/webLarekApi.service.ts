@@ -1,4 +1,4 @@
-import { Api } from '../adapters/api.adapter';
+import { HttpDriver } from '../drivers/http';
 import { IWebLarekApi } from '../app/ports';
 import { Order, Product, ProductId, SentOrder } from '../models';
 
@@ -10,11 +10,11 @@ type ApiListResponse<Type> = {
 export class WebLarekApi implements IWebLarekApi {
 	/**
 	 * Создает экземпляр WebLarekApi.
-	 * @param {Api} api - получите этот аргумент с помощью функции getApi()
+	 * @param {HttpDriver} api - получите этот аргумент с помощью функции getApi()
 	 * @param {string} cdn
 	 * @memberof WebLarekApi
 	 */
-	constructor(private api: Api, private cdn: string) {}
+	constructor(private api: HttpDriver, private cdn: string) {}
 
 	async getProducts(): Promise<Product[]> {
 		return this.api.get('/product').then((data: ApiListResponse<Product>) =>
@@ -42,6 +42,6 @@ export class WebLarekApi implements IWebLarekApi {
 	}
 }
 
-export function getApi(baseUrl: string): Api {
-	return new Api(baseUrl);
+export function getApi(baseUrl: string): HttpDriver {
+	return new HttpDriver(baseUrl);
 }
