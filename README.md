@@ -12,11 +12,11 @@
 - src/scss/ - общие файлы стилей
 - src/vendor/ - сторонние пакеты
 - src/js - исходные файлы TypeScript
-- src/js/adapters/ - модули слоя адаптеров - адаптеры API браузера
+- src/js/drivers/ - модули слоя драйверов - API браузера
 - src/js/app/ - файлы и модули слоя приложения
 - src/js/models/ - модули для типов, функций и классов обработки моделей
 - src/js/services/ - модули слоя сервисов
-- src/js/ui/ - модули слоя адаптеров - общие компоненты UI
+- src/js/ui/ - общие компоненты UI
 - src/jd/utils/ - вспомогательные функции и классы
 - src/js/views/ — UI компоненты приложения
 - src/js/types/ - типы, используемые приложением
@@ -283,13 +283,13 @@ abstract class AppView<T> extends Component<T> implements IAppView<T, HTMLElemen
 
 Показывает сообщение об успешной отправке заказа
 
-### Адаптеры
+### Драйверы
 
-Адаптеры "имеют представление" только об API браузера и ничего не "знают" о приложении
+Драйверы "имеют представление" только об API браузера и ничего не "знают" о приложении
 #### Взаимодействие с Fetch API браузера
 
 ```typescript
-class Api {
+class HttpDriver {
 	get(uri: string): Promise<object>;
 	post(uri: string, data: object, method: ApiPostMethods): Promise<object>;
 }
